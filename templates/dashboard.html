@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Student Wellness Tracker{% endblock %}
+
+{% block content %}
+<section class="page wide">
+    <h1>Welcome, {{ session['user_name'] }} 👋</h1>
+    <p>Here is a summary of your wellness check-ins.</p>
+
+    {% if stats.total > 0 %}
+
+        {% if latest %}
+        <div class="report-card">
+            <div class="score-ring rating-{{ latest.css }}" style="--score: {{ latest.score }};">
+                <div class="score-ring-inner">
+                    <span class="score-number">{{ latest.score }}</span>
+                    <span class="score-label">out of 100</span>
+                </div>
+            </div>
+            <div class="report-summary">
+                <h2>Latest score: {{ latest.label }}</h2>
+                <p>Based on your most recent check-in.</p>
+                <a href="{{ url_for('suggestions', checkin_id=latest.id) }}" class="btn">See Suggestions</a>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="stat-grid">
+            <div class="stat-card">
+                <h3>{{ stats.total }}</h3>
+                <p>Total Check-ins</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ stats.avg_sleep }}</h3>
+                <p>Avg Sleep (hrs)</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ stats.avg_water }}</h3>
+                <p>Avg Water (glasses)</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ stats.avg_exercise }}</h3>
+                <p>Avg Exercise (min)</p>
+            </div>
+        </div>
+
+        <h2>Sleep and Water (last 7 check-ins)</h2>
+        <div class="chart-box">
+            <canvas id="sleepWaterChart"></canvas>
+        </div>
+
+        <h2>Exercise Minutes (last 7 check-ins)</h2>
+        <div class="chart-box">
+            <canvas id="exerciseChart"></canvas>
+        </div>
+
+        <!-- Data from Flask, read by dashboard.js -->
+        <div id="chartData"
+             data-labels='{{ labels|tojson }}'
+             data-sleep='{{ sleep_data|tojson }}'
+             data-water='{{ water_data|tojson }}'
+             data-exercise='{{ exercise_data|tojson }}'
+             hidden></div>
+
+        <div class="button-row">
+            <a href="{{ url_for('checkin') }}" class="btn">New Check-in</a>
+            <a href="{{ url_for('history') }}" class="btn btn-secondary">View History</a>
+        </div>
+
+    {% else %}
+        <p>You have no check-ins yet.
+           <a href="{{ url_for('checkin') }}">Add your first check-in</a>.</p>
+    {% endif %}
+</section>
+
+{% if stats.total > 0 %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endif %}
+{% endblock %}

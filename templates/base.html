@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Wellness Tracker{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="{{ url_for('home') }}" class="logo">🌿 Student Wellness Tracker</a>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}" class="{{ 'active' if request.path == '/' else '' }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}" class="{{ 'active' if request.path == '/about' else '' }}">About</a></li>
+            <li><a href="{{ url_for('contact') }}" class="{{ 'active' if request.path == '/contact' else '' }}">Contact</a></li>
+
+            {% if session.get('user_id') %}
+                <li><a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.path == '/dashboard' else '' }}">Dashboard</a></li>
+                <li><a href="{{ url_for('checkin') }}" class="{{ 'active' if request.path == '/checkin' else '' }}">Check-in</a></li>
+                <li><a href="{{ url_for('history') }}" class="{{ 'active' if request.path == '/history' else '' }}">History</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout ({{ session['user_name'] }})</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}" class="{{ 'active' if request.path == '/login' else '' }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}" class="{{ 'active' if request.path == '/register' else '' }}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Each page puts its own content here -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Student Wellness Tracker | TY BSc IT Project</p>
+    </footer>
+
+</body>
+</html>

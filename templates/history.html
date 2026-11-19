@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}History - Student Wellness Tracker{% endblock %}
+
+{% block content %}
+<section class="page wide">
+    <h1>Check-in History</h1>
+
+    {% if checkins %}
+        <p>Total check-ins: {{ checkins|length }}</p>
+
+        <div class="table-wrap">
+            <table class="result-table history-table">
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Sleep (hrs)</th>
+                    <th>Water</th>
+                    <th>Exercise (min)</th>
+                    <th>Mood</th>
+                    <th>Score</th>
+                    <th>Actions</th>
+                </tr>
+                {% for row in checkins %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ row.created_at.strftime('%d %b %Y, %I:%M %p') }}</td>
+                    <td>{{ row.sleep_hours }}</td>
+                    <td>{{ row.water_glasses }}</td>
+                    <td>{{ row.exercise_minutes }}</td>
+                    <td>{{ row.mood }}</td>
+                    <td><span class="score-pill rating-{{ row.css }}">{{ row.score }}</span></td>
+                    <td class="actions">
+                        <a href="{{ url_for('suggestions', checkin_id=row.id) }}" class="btn-view">View</a>
+                        <form action="{{ url_for('delete_checkin', checkin_id=row.id) }}"
+                              method="POST"
+                              onsubmit="return confirm('Delete this check-in?');">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <p>No check-ins yet. <a href="{{ url_for('checkin') }}">Add your first check-in</a>.</p>
+    {% endif %}
+</section>
+{% endblock %}

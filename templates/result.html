@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Result - Student Wellness Tracker{% endblock %}
+
+{% block content %}
+<section class="page">
+    <h1>Your Daily Check-in</h1>
+
+    <table class="result-table">
+        <tr><th>Sleep</th><td>{{ sleep }} hours</td></tr>
+        <tr><th>Water</th><td>{{ water }} glasses</td></tr>
+        <tr><th>Exercise</th><td>{{ exercise }} minutes</td></tr>
+        <tr><th>Mood</th><td>{{ mood }}</td></tr>
+    </table>
+
+    <h2>Tips for Today</h2>
+    <ul>
+        {% for tip in tips %}
+            <li>{{ tip }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('checkin') }}" class="btn">Back to Check-in</a>
+    <a href="{{ url_for('history') }}" class="btn">View History</a>
+</section>
+{% endblock %}

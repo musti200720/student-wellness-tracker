@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Your Suggestions - Student Wellness Tracker{% endblock %}
+
+{% block content %}
+<section class="page">
+    <h1>Your Daily Wellness Report</h1>
+    <p>Check-in on {{ checkin.created_at.strftime('%d %b %Y, %I:%M %p') }}</p>
+
+    <!-- Score card -->
+    <div class="report-card">
+        <div class="score-ring rating-{{ rating.css }}" style="--score: {{ score }};">
+            <div class="score-ring-inner">
+                <span class="score-number">{{ score }}</span>
+                <span class="score-label">out of 100</span>
+            </div>
+        </div>
+        <div class="report-summary">
+            <h2>{{ rating.label }}</h2>
+            <p>{{ rating.message }}</p>
+        </div>
+    </div>
+
+    <!-- What the user entered -->
+    <div class="summary-grid">
+        <div class="summary-item">
+            <span class="summary-icon">😴</span>
+            <strong>{{ checkin.sleep_hours }} hrs</strong>
+            <span>Sleep</span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-icon">💧</span>
+            <strong>{{ checkin.water_glasses }}</strong>
+            <span>Glasses of water</span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-icon">🏃</span>
+            <strong>{{ checkin.exercise_minutes }} min</strong>
+            <span>Exercise</span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-icon">🙂</span>
+            <strong>{{ checkin.mood }}</strong>
+            <span>Mood</span>
+        </div>
+    </div>
+
+    <!-- Recommended steps -->
+    <h2>Recommended Steps</h2>
+
+    {% for tip in tips %}
+        <div class="tip-card tip-{{ tip.level }}">
+            <div class="tip-header">
+                <span class="tip-icon">{{ tip.icon }}</span>
+                <span class="tip-title">{{ tip.title }}</span>
+                <span class="tip-tag">{{ tip.tag }}</span>
+            </div>
+            <p>{{ tip.message }}</p>
+            <ul class="tip-steps">
+                {% for step in tip.steps %}
+                    <li>{{ step }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+
+    <p class="disclaimer">
+        These suggestions are general wellness tips and not medical advice.
+        If you feel unwell, please consult a doctor.
+    </p>
+
+    <div class="button-row">
+        <a href="{{ url_for('checkin') }}" class="btn">New Check-in</a>
+        <a href="{{ url_for('history') }}" class="btn btn-secondary">View History</a>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Dashboard</a>
+    </div>
+</section>
+{% endblock %}

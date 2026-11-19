@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Student Wellness Tracker{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Take Care of Your Health,<br>One Day at a Time</h1>
+    <p>Track your sleep, water, exercise and mood, and get simple, personalised
+       suggestions to feel your best at college.</p>
+
+    {% if session.get('user_id') %}
+        <a href="{{ url_for('checkin') }}" class="btn">Add Today's Check-in</a>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline">View Dashboard</a>
+    {% else %}
+        <a href="{{ url_for('register') }}" class="btn">Get Started</a>
+        <a href="{{ url_for('login') }}" class="btn btn-outline">Login</a>
+    {% endif %}
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3>Daily Check-in</h3>
+        <p>Log your sleep, water, exercise and mood in under a minute.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">💡</div>
+        <h3>Smart Suggestions</h3>
+        <p>Get a wellness score and clear steps to improve, based on your day.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Progress Dashboard</h3>
+        <p>See your averages and charts of your last seven check-ins.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Private and Secure</h3>
+        <p>Your account is password protected and only you can see your data.</p>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">How It Works</h2>
+    <div class="steps">
+        <div class="step">
+            <div class="step-number">1</div>
+            <h3>Create an account</h3>
+            <p>Register with your email and log in.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <h3>Add your check-in</h3>
+            <p>Tell us how you slept, ate, moved and felt today.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <h3>Follow the steps</h3>
+            <p>Get your score and recommended steps to feel better.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
